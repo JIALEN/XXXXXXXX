@@ -47,11 +47,23 @@ public class Min_Edit_Distance {
 
         return distance_matrix[m][n];
     }
+    //取最长
+    float max(String source,String target){
+        int sourceL=source.length();
+        int targetL=target.length();
+        if(sourceL>targetL){
+            return sourceL;
+        }
+        return targetL;
+    }
     public static void main(String[] args){
 
-        String source = "china";
-        String target = "chiyyyya";
+        String source = "chin";
+        String target = "china";
 
         System.out.println("最小编辑距离是："+minEdit_distance(source,target));
+        Min_Edit_Distance min=new Min_Edit_Distance();
+        float similarityRadio=1-(float)minEdit_distance(source,target)/min.max(source,target);
+        System.out.println("相似度是："+similarityRadio);
     }
 }
