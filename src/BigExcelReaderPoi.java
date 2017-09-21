@@ -11,31 +11,22 @@ import java.util.Locale;
  * Created by 张超 on 2017/9/7.
  */
 public class BigExcelReaderPoi {
-
-    public static void main(String args[]){
-        BigExcelReaderPoi bigExcelReaderPoi=new BigExcelReaderPoi();
-
-        //xls-------->>>>>>csv
-        String inputPath="D:\\zhiyuan.xls";
-        String outputPath="D:\\input.csv";
-        bigExcelReaderPoi.xlsConvertToCsv(inputPath,outputPath);
-
-        //xlsx------->>>>>>>csv
-        String inputPath2="D:/zhiyuan.xlsx";
-        String outputPath2="D:\\output.csv";
-        bigExcelReaderPoi.xlsxConvertToCsv(inputPath2,outputPath2);
+    OutputStream os;
+    OutputStreamWriter osw;
+    BufferedWriter bw;
+    WorkbookSettings ws=new WorkbookSettings();
+    jxl.Workbook wk;
+    FileInputStream in;
+    public BigExcelReaderPoi() throws FileNotFoundException {
     }
     public void xlsConvertToCsv(String inputPath,String outputPath){
-
         try {
-
-            OutputStream os=new FileOutputStream(new File(outputPath));
-            OutputStreamWriter osw=new OutputStreamWriter(os,"UTF8");
-            BufferedWriter bw=new BufferedWriter(osw);
+             os=new FileOutputStream(new File(outputPath));
+             osw=new OutputStreamWriter(os,"UTF8");
+             bw=new BufferedWriter(osw);
             //载入excel文件
-            WorkbookSettings ws=new WorkbookSettings();
             ws.setLocale(new Locale("en","EN"));
-            jxl.Workbook wk= jxl.Workbook.getWorkbook(new File(inputPath),ws);
+            wk= jxl.Workbook.getWorkbook(new File(inputPath),ws);
             //从工作簿workbook取得每页sheets
             for(int sheet=0;sheet<wk.getNumberOfSheets();sheet++){
                 jxl.Sheet s=wk.getSheet(sheet);
@@ -72,10 +63,10 @@ public class BigExcelReaderPoi {
         long startTime = System.currentTimeMillis();
         System.out.println("程序开始时间：" + (startTime) + "ms");
         try {
-            OutputStream os=new FileOutputStream(new File(outputPath));
-            OutputStreamWriter osw=new OutputStreamWriter(os,"UTF8");
-            BufferedWriter bw=new BufferedWriter(osw);
-            FileInputStream in = new FileInputStream(inputPath);
+             os=new FileOutputStream(new File(outputPath));
+             osw=new OutputStreamWriter(os,"UTF8");
+             bw=new BufferedWriter(osw);
+             in = new FileInputStream(inputPath);
             Workbook wk = StreamingReader.builder()
                     .rowCacheSize(100)  //缓存到内存中的行数，默认是10
                     .bufferSize(4096)  //读取资源时，缓存到内存的字节大小，默认是1024
@@ -105,5 +96,24 @@ public class BigExcelReaderPoi {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    //TEST
+    public static void main(String args[]){
+        BigExcelReaderPoi bigExcelReaderPoi= null;
+        try {
+            bigExcelReaderPoi = new BigExcelReaderPoi();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        //xls-------->>>>>>csv
+//        String inputPath="D:\\zhiyuan.xls";
+//        String outputPath="D:\\input.csv";
+//        bigExcelReaderPoi.xlsConvertToCsv(inputPath,outputPath);
+
+        //xlsx------->>>>>>>csv
+        String inputPath2="D:/zhiyuan.xlsx";
+        String outputPath2="D:\\output.csv";
+        bigExcelReaderPoi.xlsxConvertToCsv(inputPath2,outputPath2);
     }
 }
